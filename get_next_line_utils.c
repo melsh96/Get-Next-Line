@@ -6,21 +6,11 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/02 16:59:41 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:20:55 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	ft_strlen(char *str)
-{
-	int	len;
-
-	len = 0;
-	while (str[len] != '\0')
-		len++;
-	return (len);
-}
 
 t_list	*ft_lstnew(void *content)
 {
@@ -99,7 +89,7 @@ void	malloc_line(char **line, t_list *stash)
 			if (stash->content[i] == '\n')
 			{
 				len++;
-				break;
+				break ;
 			}
 			len++;
 			i++;

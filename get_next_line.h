@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:28:04 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/05/30 16:43:37 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/03 14:18:12 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,13 @@ typedef struct s_list
 }					t_list;
 
 char	*get_next_line(int fd);
+void	read_to_stash(int fd, t_list **stash);
+void	stash_to_line(t_list *stash, char **line);
+int		ft_strlen(char *str);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
+int		check_new_line(t_list *stash);
+void	malloc_line(char **line, t_list *stash);
 
 #endif
