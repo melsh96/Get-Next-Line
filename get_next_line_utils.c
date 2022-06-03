@@ -6,11 +6,21 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/05/30 16:06:07 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/02 16:59:41 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+int	ft_strlen(char *str)
+{
+	int	len;
+
+	len = 0;
+	while (str[len] != '\0')
+		len++;
+	return (len);
+}
 
 t_list	*ft_lstnew(void *content)
 {
@@ -54,4 +64,47 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		to_clear = next;
 	}
 	*lst = NULL;
+}
+
+int	check_new_line(t_list *stash)
+{
+	int		i;
+	t_list	*last_node;
+
+	if (stash == NULL)
+		return (0);
+	while (stash->next != NULL)
+			last_node = stash->next;
+	i = 0;
+	while (last_node->content[i])
+	{
+		if (last_node->content[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	malloc_line(char **line, t_list *stash)
+{
+	int	i;
+	int	len;
+
+	len = 0;
+	while (stash != NULL)
+	{
+		i = 0;
+		while (stash->content[i])
+		{
+			if (stash->content[i] == '\n')
+			{
+				len++;
+				break;
+			}
+			len++;
+			i++;
+		}
+		stash = stash->next;
+	}
+	*line = malloc(sizeof(char) * (len + 1));
 }
