@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:10:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/03 18:07:14 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:42:38 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ void	read_to_stash(int fd, t_list **stash)
 	int				line_read;
 
 	// ! Read till it finds a new line
+	// malloc_line(buf, *stash);
+	// if (buf == NULL)
+	// 	return ;
+	line_read = 1;
 	while (!check_new_line(*stash) && line_read != 0)
 	{
 		buf = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -47,7 +51,7 @@ void	read_to_stash(int fd, t_list **stash)
 }
 
 // TODO	2 : extract from stash to line till we reach a \n or end of file
-void	stash_to_line(t_list *stash, char **line)
+void	stash_to_line(t_list *stash, char *line)
 {
 	int	i;
 	int	j;
@@ -55,7 +59,7 @@ void	stash_to_line(t_list *stash, char **line)
 	if (stash == NULL)
 		return ;
 	malloc_line(line, stash);
-	if (*line == NULL)
+	if (line == NULL)
 		return ;
 	j = 0;
 	while (stash)
@@ -65,23 +69,22 @@ void	stash_to_line(t_list *stash, char **line)
 		{
 			if (stash->content[i] == '\n')
 			{
-				(*line)[j++] = stash->content[i];
+				line[j++] = stash->content[i];
 				break ;
 			}
-			(*line)[j++] = stash->content[i++];
+			line[j++] = stash->content[i++];
 		}
 		stash = stash->next;
 	}
-	(*line)[j] = '\0';
+	line[j] = '\0';
 }
 
 // TODO	3 : clear the stash
 
 char	*get_next_line(int fd)
 {
-	char			line[BUFFER_SIZE + 1];
+	char			*line;
 	int				i;
-	int				r;
 	static t_list	*stash = NULL; // ! It will be initialized only at the begining
 	
 	// ! Error cases
@@ -90,26 +93,22 @@ char	*get_next_line(int fd)
 	
 	//line = malloc(sizeof(char) * 101);
 	//line = NULL;
-	
-	r = read(fd, line, 0);
-	printf("r = %d\n",r);
 	printf("fd = %d\n",fd);
-	printf("line = %s\n",line);
-	if (fd < 0 || BUFFER_SIZE <= 0 || r < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, line, 0) < 0)
 		return (NULL);
 	
 	i = 0;
-	//line = NULL;
-	//line[0] = 'C';
-	//line[i] = '\0';
-	printf("%s\n",line);
+	line = NULL;
+	printf("line = %s\n",line);
 	// TODO 1 : read from fd & add to the stash
 	read_to_stash(fd, &stash);
-	if (stash == NULL || ft_strlen(line) == 0)
-		ft_lstclear(&stash, free);
 	// TODO	2 : extract from stash to line till we reach a \n or end of file
-	stash_to_line(stash, *line);
+	stash_to_line(stash, line);
+	if (stash == NULL)
+		return (NULL);
 	// TODO	3 : clear the stash
+	// if (stash == NULL || ft_strlen(line) == 0)
+	// 	ft_lstclear(&stash, free);
 	return (line);
 }
 
@@ -119,7 +118,7 @@ int	main(void)
 	char	*line;
 
 	fd = open("test.txt", O_RDONLY);
-	while (1)
+	while (fd)
 	{
 		line = get_next_line(fd);
 		printf("%s\n", line);

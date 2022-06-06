@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/03 14:20:55 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:51:51 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,37 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 int	check_new_line(t_list *stash)
 {
 	int		i;
-	t_list	*last_node;
+	t_list	*current;
 
 	if (stash == NULL)
 		return (0);
-	while (stash->next != NULL)
-			last_node = stash->next;
+	current = ft_lst_get_last(stash);
+	// while (stash && stash->next)
+	// 	stash = stash->next;
+	// while (stash->next)
+	// 		last_node = stash->next;
 	i = 0;
-	while (last_node->content[i])
+	while (current->content[i])
 	{
-		if (last_node->content[i] == '\n')
+		if (current->content[i] == '\n')
 			return (1);
 		i++;
-	}
+	}		
 	return (0);
 }
 
-void	malloc_line(char **line, t_list *stash)
+// Returns a pointer to the last node in the stash
+t_list	*ft_lst_get_last(t_list *stash)
+{
+	t_list	*current;
+
+	current = stash;
+	while (current && current->next)
+		current = current->next;
+	return (current);
+}
+
+void	malloc_line(char *line, t_list *stash)
 {
 	int	i;
 	int	len;
@@ -96,5 +110,5 @@ void	malloc_line(char **line, t_list *stash)
 		}
 		stash = stash->next;
 	}
-	*line = malloc(sizeof(char) * (len + 1));
+	line = malloc(sizeof(char) * (len + 1));
 }
