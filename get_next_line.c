@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:10:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/07 17:47:04 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:29:43 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ void	read_to_stash(int fd, t_list **stash)
 	int				line_read;
 
 	// ! Read till it finds a new line
-	// malloc_line(buf, *stash);
-	// if (buf == NULL)
-	// 	return ;
 	new_node = *stash;
 	line_read = 1;
 	while (check_new_line(new_node) == -1 && line_read != 0)
@@ -41,15 +38,9 @@ void	read_to_stash(int fd, t_list **stash)
 		if (buf == NULL)
 			return ;
 		line_read = read(fd, buf, BUFFER_SIZE);
-		// if (*stash == NULL || line_read == 0)
-		// 	free(buf);
 		buf[line_read] = '\0';
-		// if (new_node)
 		new_node = ft_lstnew(buf);
 		ft_lstadd_back(stash, new_node);
-		// if (new_node)
-			// new_node = new_node->next;
-		
 	}
 }
 
@@ -93,13 +84,9 @@ char	*get_next_line(int fd)
 	// ! If open does not work, it returns a negative number
 	// ! If read sends a negative number or the buffer size is less than 0
 	
-	//line = malloc(sizeof(char) * 101);
 	line = NULL;
-	// printf("fd = %d\n",fd);
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, line, 0) < 0)
 		return (NULL);
-	// line = NULL;
-	// printf("line = %s\n",line);
 	// TODO 1 : read from fd & add to the stash
 	read_to_stash(fd, &stash);
 	if (stash == NULL)
@@ -107,27 +94,26 @@ char	*get_next_line(int fd)
 	// TODO	2 : extract from stash to line till we reach a \n or end of file
 	stash_to_line(stash, &line);
 	// TODO	3 : clear the stash
-	// if (stash == NULL || ft_strlen(line) == 0)
 	ft_lstclear(&stash, free);
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
-// 	int		i;
+int	main(void)
+{
+	int		fd;
+	char	*line;
+	int		i;
 
-// 	i = 0;
-// 	fd = open("test.txt", O_RDONLY);
-// 	while (fd)
-// 	{
-// 		line = get_next_line(fd);
-// 		printf("%s\n", line);
-// 		if (line == NULL)
-// 			break ;
-// 		i++;
-// 		free(line);
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	fd = open("test.txt", O_RDONLY);
+	while (fd)
+	{
+		line = get_next_line(fd);
+		printf("%s", line);
+		if (line == NULL)
+			break ;
+		i++;
+		free(line);
+	}
+	return (0);
+}

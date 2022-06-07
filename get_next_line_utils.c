@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/07 16:12:00 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:29:15 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,25 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		last_node->next = new;
 }
 
+void	new_line_exists(t_list	*to_clear)
+{
+	int		i;
+	int		pos;
+	
+	i = 0;
+	pos = check_new_line(to_clear) + 1;
+	while (to_clear->content[i + pos] != '\0')
+	{
+		(to_clear->content)[i] = (to_clear->content)[i + pos];
+		i++;
+	}
+	to_clear->content[i] = '\0';
+}
+
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
 	t_list	*to_clear;
 	t_list	*next;
-	int		i;
-	int		pos;
 
 	if (lst == NULL || del == NULL)
 		return ;
@@ -62,14 +75,7 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 		}
 		else
 		{
-			i = 0;
-			pos = check_new_line(to_clear) + 1;
-			while (to_clear->content[i + pos] != '\0')
-			{
-				(to_clear->content)[i] = (to_clear->content)[i + pos];
-				i++;
-			}
-			to_clear->content[i] = '\0';
+			new_line_exists(to_clear);
 			break ;
 		}
 		to_clear = next;
@@ -82,13 +88,7 @@ int	check_new_line(t_list *node)
 	int		i;
 	t_list	*current;
 
-	// if (stash == NULL)
-	// 	return (0);
 	current = node;
-	// while (stash && stash->next)
-	// 	stash = stash->next;
-	// while (stash->next)
-	// 		last_node = stash->next;
 	i = 0;
 	if (current)
 	{
