@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/06 19:51:51 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/07 16:12:00 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,13 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 
 	if (!lst || !new)
 		return ;
-	while ((*lst)->content != NULL)
-		last_node = (*lst)->next;
-	if (!last_node)
+	last_node = *lst;
+	if (*lst != NULL)
+	{	
+		while (last_node->next != NULL)
+			last_node = last_node->next;
+	}
+	if (last_node == NULL)
 		*lst = new;
 	else
 		last_node->next = new;
@@ -42,6 +46,8 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
 	t_list	*to_clear;
 	t_list	*next;
+	int		i;
+	int		pos;
 
 	if (lst == NULL || del == NULL)
 		return ;
@@ -49,47 +55,65 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	while (to_clear != NULL)
 	{
 		next = to_clear->next;
-		del(to_clear->content);
-		free(to_clear);
+		if (check_new_line(to_clear) == -1)
+		{
+			del(to_clear->content);
+			free(to_clear);
+		}
+		else
+		{
+			i = 0;
+			pos = check_new_line(to_clear) + 1;
+			while (to_clear->content[i + pos] != '\0')
+			{
+				(to_clear->content)[i] = (to_clear->content)[i + pos];
+				i++;
+			}
+			to_clear->content[i] = '\0';
+			break ;
+		}
 		to_clear = next;
 	}
-	*lst = NULL;
+	*lst = to_clear;
 }
 
-int	check_new_line(t_list *stash)
+int	check_new_line(t_list *node)
 {
 	int		i;
 	t_list	*current;
 
-	if (stash == NULL)
-		return (0);
-	current = ft_lst_get_last(stash);
+	// if (stash == NULL)
+	// 	return (0);
+	current = node;
 	// while (stash && stash->next)
 	// 	stash = stash->next;
 	// while (stash->next)
 	// 		last_node = stash->next;
 	i = 0;
-	while (current->content[i])
+	if (current)
 	{
-		if (current->content[i] == '\n')
-			return (1);
-		i++;
+		while (current->content[i])
+		{
+			if (current->content[i] == '\n')
+				return (i);
+			i++;
+		}
 	}		
-	return (0);
+	return (-1);
 }
 
 // Returns a pointer to the last node in the stash
-t_list	*ft_lst_get_last(t_list *stash)
-{
-	t_list	*current;
+// t_list	*last_node(t_list *stash)
+// {
+// 	t_list	*current;
 
-	current = stash;
-	while (current && current->next)
-		current = current->next;
-	return (current);
-}
+// 	current = stash;
+// 	while (current && current->next)
+// 		current = current->next;
+// 	return (current);
+// }
 
-void	malloc_line(char *line, t_list *stash)
+void	malloc_line(char **line, t_list *stash)
 {
 	int	i;
 	int	len;
@@ -110,5 +134,8 @@ void	malloc_line(char *line, t_list *stash)
 		}
 		stash = stash->next;
 	}
-	line = malloc(sizeof(char) * (len + 1));
+	if (len == 0)
+		*line = NULL;
+	else
+		*line = malloc(sizeof(char) * (len + 1));
 }
