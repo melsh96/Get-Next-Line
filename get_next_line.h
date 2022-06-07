@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 14:28:04 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/07 14:56:49 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:52:01 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_H
 
 # include <unistd.h>
-# include <stdio.h> //!to be removed
 # include <stdlib.h>
 
 // # include <sys/types.h>
@@ -26,7 +25,7 @@
 #  define BUFFER_SIZE 5
 # endif
 
-typedef struct	s_list
+typedef struct s_list
 {
 	char			*content;
 	struct s_list	*next;

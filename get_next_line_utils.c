@@ -6,7 +6,7 @@
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/07 19:29:15 by meshahrv         ###   ########.fr       */
+/*   Updated: 2022/06/07 19:49:48 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	new_line_exists(t_list	*to_clear)
 {
 	int		i;
 	int		pos;
-	
+
 	i = 0;
 	pos = check_new_line(to_clear) + 1;
 	while (to_clear->content[i + pos] != '\0')
@@ -112,30 +112,3 @@ int	check_new_line(t_list *node)
 // 		current = current->next;
 // 	return (current);
 // }
-
-void	malloc_line(char **line, t_list *stash)
-{
-	int	i;
-	int	len;
-
-	len = 0;
-	while (stash != NULL)
-	{
-		i = 0;
-		while (stash->content[i])
-		{
-			if (stash->content[i] == '\n')
-			{
-				len++;
-				break ;
-			}
-			len++;
-			i++;
-		}
-		stash = stash->next;
-	}
-	if (len == 0)
-		*line = NULL;
-	else
-		*line = malloc(sizeof(char) * (len + 1));
-}
