@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/30 13:28:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/08 14:33:32 by meshahrv         ###   ########.fr       */
+/*   Created: 2022/06/08 15:04:57 by meshahrv          #+#    #+#             */
+/*   Updated: 2022/06/08 15:13:11 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 t_list	*ft_lstnew(void *content)
 {
@@ -75,14 +75,3 @@ int	check_new_line(t_list *node)
 	}		
 	return (-1);
 }
-
-// Returns a pointer to the last node in the stash
-// t_list	*last_node(t_list *stash)
-// {
-// 	t_list	*current;
-
-// 	current = stash;
-// 	while (current && current->next)
-// 		current = current->next;
-// 	return (current);
-// }

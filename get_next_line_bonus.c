@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meshahrv <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/30 13:10:51 by meshahrv          #+#    #+#             */
-/*   Updated: 2022/06/08 14:43:58 by meshahrv         ###   ########.fr       */
+/*   Created: 2022/06/08 15:03:03 by meshahrv          #+#    #+#             */
+/*   Updated: 2022/06/08 15:15:19 by meshahrv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	malloc_line(char **line, t_list *stash)
 {
@@ -119,16 +119,16 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 char	*get_next_line(int fd)
 {
 	char			*line;
-	static t_list	*stash = NULL;
+	static t_list	*stash[FOPEN_MAX] = {NULL};
 
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, line, 0) < 0)
 		return (NULL);
-	read_to_stash(fd, &stash);
+	read_to_stash(fd, &stash[fd]);
 	if (stash == NULL)
 		return (NULL);
-	stash_to_line(stash, &line);
-	ft_lstclear(&stash, free);
+	stash_to_line(stash[fd], &line);
+	ft_lstclear(&stash[fd], free);
 	return (line);
 }
 
