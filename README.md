@@ -80,4 +80,5 @@ char	*get_next_line(int fd)
 	stash_to_line(stash[fd], &line);
 	ft_lstclear(&stash[fd], free);
 	return (line);
-}```
+}
+```
